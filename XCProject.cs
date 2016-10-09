@@ -56,6 +56,7 @@ namespace UnityEditor.XCodeEditor
 		
 		public XCProject( string filePath ) : this()
 		{
+
 			if( !System.IO.Directory.Exists( filePath ) ) {
 				Debug.LogWarning( "XCode project path does not exist: " + filePath );
 				return;
@@ -779,7 +780,14 @@ namespace UnityEditor.XCodeEditor
 			XCPlist plist = new XCPlist (plistPath);
 			plist.Process(mod.plist);
 
-			this.Consolidate();
+            if (null != mod.project) {
+                Debug.Log("Add project items...");
+                PBXNativeTarget nativeTarget = GetNativeTarget("Unity-iPhone");
+                project.AddAttribute(nativeTarget.guid, mod.project);
+                modified = true;
+            }
+
+            this.Consolidate();
 		}
 		
 		#endregion

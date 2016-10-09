@@ -8,6 +8,8 @@ namespace UnityEditor.XCodeEditor
 	{
 		protected string MAINGROUP_KEY = "mainGroup";
 		protected string KNOWN_REGIONS_KEY = "knownRegions";
+        protected string ATTRIBUTES = "attributes";
+        protected string TARGET_ATTRIBUTES = "TargetAttributes";
 
 		protected bool _clearedLoc = false;
 
@@ -29,6 +31,13 @@ namespace UnityEditor.XCodeEditor
 			}
 		}
 
+        public PBXDictionary attributes
+        {
+            get {
+                return (PBXDictionary)_data[ATTRIBUTES];
+            }
+        }
+
 		public void AddRegion(string region) {
 			if (!_clearedLoc)
 			{
@@ -39,5 +48,20 @@ namespace UnityEditor.XCodeEditor
 
 			knownRegions.Add(region);
 		}
+
+        public void AddAttribute(string target, Hashtable dictionary)
+        {
+            Debug.Log("Add attribute: " + target);
+            PBXDictionary targetAttributes = (PBXDictionary)attributes[TARGET_ATTRIBUTES];
+            PBXDictionary value = null;
+            if (targetAttributes.ContainsKey(target)) {
+                value = (PBXDictionary)targetAttributes[target];
+            } else {
+                targetAttributes[target] = value = new PBXDictionary();
+            }
+            foreach (DictionaryEntry item in dictionary) {
+                value.Add((string)item.Key, item.Value);
+            }
+        }
 	}
 }

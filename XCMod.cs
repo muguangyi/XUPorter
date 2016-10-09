@@ -92,6 +92,13 @@ namespace UnityEditor.XCodeEditor
 				return (Hashtable)_datastore["plist"];
 			}
 		}
+
+        public Hashtable project
+        {
+            get {
+                return (Hashtable)_datastore["project"];
+            }
+        }
 		
 		public XCMod( string filename )
 		{	
